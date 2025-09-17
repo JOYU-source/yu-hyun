@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단한 계산기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .calculator {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 250px;
+        }
+
+        #display {
+            width: 100%;
+            height: 40px;
+            text-align: right;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ddd;
+        }
+
+        button.operator {
+            background-color: #ff9f00;
+            color: white;
+        }
+
+        button.equal {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* 홀수는 빨간색, 짝수는 파란색 */
+        .odd {
+            background-color: red;
+            color: white;
+        }
+
+        .even {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <div class="buttons">
+            <button class="btn" id="btn7" onclick="appendNumber(7)">7</button>
+            <button class="btn" id="btn8" onclick="appendNumber(8)">8</button>
+            <button class="btn" id="btn9" onclick="appendNumber(9)">9</button>
+            <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+            <button class="btn" id="btn4" onclick="appendNumber(4)">4</button>
+            <button class="btn" id="btn5" onclick="appendNumber(5)">5</button>
+            <button class="btn" id="btn6" onclick="appendNumber(6)">6</button>
+            <button class="btn operator" onclick="appendOperator('-')">-</button>
+
+            <button class="btn" id="btn1" onclick="appendNumber(1)">1</button>
+            <button class="btn" id="btn2" onclick="appendNumber(2)">2</button>
+            <button class="btn" id="btn3" onclick="appendNumber(3)">3</button>
+            <button class="btn operator" onclick="appendOperator('*')">*</button>
+
+            <button class="btn" id="btn0" onclick="appendNumber(0)">0</button>
+            <button class="btn" onclick="clearDisplay()">C</button>
+            <button class="btn operator" onclick="appendOperator('/')">/</button>
+            <button class="btn equal" onclick="calculateResult()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById("display");
+
+        // 숫자 버튼을 클릭했을 때
+        function appendNumber(number) {
+            display.value += number;
+            updateButtonColors();  // 색상 업데이트
+        }
+
+        // 연산자 버튼을 클릭했을 때
+        function appendOperator(operator) {
+            display.value += operator;
+            updateButtonColors();  // 색상 업데이트
+        }
+
+        // 화면을 초기화
+        function clearDisplay() {
+            display.value = "";
+            updateButtonColors();  // 색상 초기화
+        }
+
+        // 계산 결과를 출력
+        function calculateResult() {
+            try {
+                display.value = eval(display.value);
+            } catch (error) {
+                display.value = "오류";
+            }
+            updateButtonColors();  // 색상 업데이트
+        }
+
+        // 버튼의 색상을 홀수/짝수에 맞게 변경
+        function updateButtonColors() {
+            // 숫자 버튼을 모두 가져옵니다.
+            let buttons = document.querySelectorAll(".btn");
+            buttons.forEach(button => {
+                // 버튼의 텍스트가 숫자인지 확인
+                let value = button.textContent;
+                if (value.match(/[0-9]/)) {
+                    if (parseInt(value) % 2 === 0) {
+                        // 짝수는 파란색
+                        button.classList.remove("odd");
+                        button.classList.add("even");
+                    } else {
+                        // 홀수는 빨간색
+                        button.classList.remove("even");
+                        button.classList.add("odd");
+                    }
+                }
+            });
+        }
+
+        // 초기 색상 설정
+        updateButtonColors();
+    </script>
+</body>
+</html>
+
+
